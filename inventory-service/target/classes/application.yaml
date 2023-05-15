@@ -1,0 +1,23 @@
+spring.cloud.stream:
+  function:
+    definition: inventoryProcessor
+  bindings:
+    inventoryProcessor-in-0:
+      destination: order-event
+    inventoryProcessor-out-0:
+      destination: inventory-event
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:6432/mydata
+    username: mydata
+    password: mydata
+    hikari:
+      connection-test-query: SELECT 1
+      maximum-pool-size: 5
+      connection-timeout: 20000
+  jpa:
+    hibernate:
+      ddl-auto: update
+      database: postgresql
+      show-sql: true

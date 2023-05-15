@@ -1,0 +1,28 @@
+server:
+  port: 8080
+spring.cloud.stream:
+#  kafka:    # kafka/zookeeper 여러개일 경우 brokers, zkNodes 사용. 선언안하면 9092 포트 default 로 kafka 만 사용
+  function:   # java.util.function 패키지 Bean 들 등록
+    definition: orderSupplier;paymentEventConsumer;inventoryEventConsumer
+  bindings:   # 함수형 빈 사용 시 <빈 이름> + in / out + index 규칙으로 해야 함
+    orderSupplier-out-0:
+      destination: order-event  # 이건 고유 이름
+    paymentEventConsumer-in-0:
+      destination: payment-event
+    inventoryEventConsumer-in-0:
+      destination: inventory-event
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:6432/mydata
+    username: mydata
+    password: mydata
+    hikari:
+      connection-test-query: SELECT 1
+      maximum-pool-size: 5
+      connection-timeout: 20000
+  jpa:
+    hibernate:
+      ddl-auto: update
+      database: postgresql
+      show-sql: true
